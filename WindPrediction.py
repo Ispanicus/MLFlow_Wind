@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 mlflow.set_tracking_uri('http://training.itu.dk:5000/')
 mlflow.sklearn.autolog()
 
-with mlflow.start_run(run_name="test3"):
+with mlflow.start_run(run_name="alai"):
     
     dataset_time = datetime.datetime.now()
     mlflow.log_param("dataset_time", dataset_time)
@@ -116,16 +116,3 @@ with mlflow.start_run(run_name="test3"):
                 cv=TimeSeriesSplit(n_splits=len(X)//24).split(X), verbose=4, n_jobs=-1, refit=True, return_train_score=True)
 
     gsc.fit(X, y)
-    preds = gsc.predict(X_test)
-    
-    MAE = skm.mean_absolute_error(y_test, preds)
-    mlflow.log_metric("MAE", MAE)
-    print("MAE", MAE)
-    
-    r2 = skm.r2_score(y_test, preds)
-    mlflow.log_metric("r2", r2)
-    print("r2", r2)
-    
-    print("Saving model")
-    mlflow.pyfunc.save_model("model", python_model=gsc.best_estimator_, conda_env="conda.yaml")
-    
