@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 mlflow.set_tracking_uri('http://training.itu.dk:5000/')
 mlflow.sklearn.autolog()
 
-with mlflow.start_run(run_name="test2"):
+with mlflow.start_run(run_name="test3"):
     
     dataset_time = datetime.datetime.now()
     mlflow.log_param("dataset_time", dataset_time)
