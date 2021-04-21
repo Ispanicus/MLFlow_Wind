@@ -15,14 +15,9 @@ from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 
-
-mlflow.set_tracking_uri('http://training.itu.dk:5000/')
 mlflow.sklearn.autolog()
 
 with mlflow.start_run():
-    
-    dataset_time = datetime.datetime.now()
-    mlflow.log_param("dataset_time", dataset_time)
     
     client = InfluxDBClient(host='influxus.itu.dk', port=8086, username='lsda', password='icanonlyread')
     client.switch_database('orkney')
