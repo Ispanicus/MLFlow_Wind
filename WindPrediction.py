@@ -116,9 +116,9 @@ with mlflow.start_run(run_name="test2"):
                 cv=TimeSeriesSplit(n_splits=len(X)//24).split(X), verbose=4, n_jobs=-1, refit=True, return_train_score=True)
 
     gsc.fit(X, y)
-    preds = gsc.predict(None, X_test)
+    preds = gsc.predict(X_test)
     
-    MAE = skm.mean_absolute_error(test_y, preds)
+    MAE = skm.mean_absolute_error(y_test, preds)
     mlflow.log_metric("MAE", MAE)
     print("MAE", MAE)
     
@@ -129,4 +129,3 @@ with mlflow.start_run(run_name="test2"):
     print("Saving model")
     mlflow.pyfunc.save_model("model", python_model=model, conda_env="conda.yaml")
     
-
