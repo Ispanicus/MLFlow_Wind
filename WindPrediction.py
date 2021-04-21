@@ -56,10 +56,10 @@ with mlflow.start_run(run_name="alai"):
     train_df = df[:int(n*0.8)]
     test_df = df[int(n*0.8):]
 
-    X = train_df[['Source_time','Speed','Direction','Lead_hours']]
+    X = train_df[['Speed','Direction']]
     y = train_df['Total']
 
-    X_test = test_df[['Source_time','Speed','Direction','Lead_hours']]
+    X_test = test_df[['Speed','Direction',]]
     y_test = test_df['Total']
 
     def wind_to_vector(direction):
@@ -85,23 +85,8 @@ with mlflow.start_run(run_name="alai"):
             X_ = X_.rename(columns={0:'X', 1:'Y'})
             return X_
 
-    class Time_Transformer(BaseEstimator, TransformerMixin):
-        def __init__(self):       
-            pass
-        
-        def fit(self, X, y=None):
-            return self
-        
-        def transform(self, X, y = None):
-            X_ = pd.DataFrame(X.copy())
-            X_['Day_time'] = pd.to_datetime(X_['Source_time'], unit='s').dt.hour + X_["Lead_hours"].astype(int)
-            X_['Source_time'] = (X_['Source_time'] + X_["Lead_hours"].astype(int)*3_600_000) % 3_600_000*24*365
-            X_.drop(columns=['Lead_hours'], inplace=True)
-            return X_
-
 
     col_transformer = ColumnTransformer([('direction', Direction_Transformer(), ['Direction']),
-                                        #('time', Time_Transformer(), ['Source_time', 'Lead_hours']),
                                         ('poly', PolynomialFeatures(), ['Speed']),
                                         ])
     pipe = Pipeline([('transformer', col_transformer),
