@@ -126,3 +126,5 @@ with mlflow.start_run(run_name="test2"):
     
     print("Saving model")
     mlflow.pyfunc.save_model("model", python_model=model, conda_env="conda.yaml")
+    
+mlflow.end_run()
