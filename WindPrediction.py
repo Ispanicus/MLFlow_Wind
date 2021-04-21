@@ -127,5 +127,5 @@ with mlflow.start_run(run_name="test2"):
     print("r2", r2)
     
     print("Saving model")
-    mlflow.pyfunc.save_model("model", python_model=gsc, conda_env="conda.yaml")
+    mlflow.pyfunc.save_model("model", python_model=gsc.best_estimator_, conda_env="conda.yaml")
     
