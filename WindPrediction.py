@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
 import pandas as pd
+import sklearn.metrics as skm
 import pickle
 from sklearn import preprocessing
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -113,8 +114,13 @@ with mlflow.start_run(run_name="test2"):
                 cv=TimeSeriesSplit(n_splits=len(X)//24).split(X), verbose=4, n_jobs=-1, refit=True, return_train_score=True)
 
     gsc.fit(X, y)
-
-    r2 = r2_score(y, gsc.predict(X))
+    preds = gsc.predict(None, X_test)
+    
+    MAE = skm.mean_absolute_error(test_y, preds)
+    mlflow.log_metric("MAE", MAE)
+    print("MAE", MAE)
+    
+    r2 = skm.r2_score(y_test, preds)
     mlflow.log_metric("r2", r2)
     print("r2", r2)
     
